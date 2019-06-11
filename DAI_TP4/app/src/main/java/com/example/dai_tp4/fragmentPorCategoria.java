@@ -26,7 +26,7 @@ public class fragmentPorCategoria extends Fragment {
     public ArrayList<String> ListaCategorias;
     public View onCreateView(LayoutInflater inflater, ViewGroup grupoView, Bundle datosRecibidos)
     {
-        VistaDevolver=inflater.inflate(R.layout.buscar_por_categoria,null);
+        VistaDevolver=inflater.inflate(R.layout.buscar_por_categoria,grupoView,false);
         ListaCategorias=new ArrayList<>();
         MiListaCatgorias=VistaDevolver.findViewById(R.id.ListaBuscarPorCategorias);
         arrayAdapter=new ArrayAdapter((MainActivity)getActivity(),android.R.layout.simple_list_item_1,ListaCategorias);

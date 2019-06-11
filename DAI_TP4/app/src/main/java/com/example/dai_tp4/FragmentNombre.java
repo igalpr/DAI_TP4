@@ -29,7 +29,7 @@ public class FragmentNombre extends Fragment implements View.OnClickListener{
     Button BotonProcesar;
     public View onCreateView(LayoutInflater inflater, ViewGroup grupoView, Bundle datosRecibidos)
     {
-        VistaDevolver=inflater.inflate(R.layout.buscra_por_nombre,null);
+        VistaDevolver=inflater.inflate(R.layout.buscra_por_nombre,grupoView,false);
         BotonProcesar=VistaDevolver.findViewById(R.id.BotonNombre);
         BotonProcesar.setOnClickListener(this);
         return VistaDevolver;
