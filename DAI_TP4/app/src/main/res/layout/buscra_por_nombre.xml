@@ -2,10 +2,15 @@
 <LinearLayout android:layout_width="match_parent"
     android:layout_height="wrap_content"
     xmlns:android="http://schemas.android.com/apk/res/android">
-    <ListView
+    <EditText
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/ListaMostrarEnResultados">
-    </ListView>
-
+        android:hint="Ingrese la categoria que quiere ingresar"
+        android:textSize="20sp"
+        android:id="@+id/NombreIngresado"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Buscar"
+        android:onClick="RecaudarInformacion"/>
 </LinearLayout>

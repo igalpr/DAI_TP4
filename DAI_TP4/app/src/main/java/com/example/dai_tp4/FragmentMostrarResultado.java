@@ -1,7 +1,6 @@
 package com.example.dai_tp4;
 
 import android.app.Fragment;
-import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -9,46 +8,37 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
-
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class fragmentPorCategoria extends Fragment {
-    View VistaDevolver;
-    public ListView MiListaCatgorias;
+public class FragmentMostrarResultado extends Fragment {
+    public ListView listView;
     public ArrayAdapter arrayAdapter;
-    public ArrayList<String> ListaCategorias;
-    public View onCreateView(LayoutInflater inflater, ViewGroup grupoView, Bundle datosRecibidos)
-    {
-        VistaDevolver=inflater.inflate(R.layout.buscar_por_categoria,null);
-        ListaCategorias=new ArrayList<>();
-        MiListaCatgorias=VistaDevolver.findViewById(R.id.ListaBuscarPorCategorias);
-        arrayAdapter=new ArrayAdapter((MainActivity)getActivity(),android.R.layout.simple_list_item_1,ListaCategorias);
+    public ArrayList<String> ListaACargar;
+    String Filtro;
+    View VistaADevolver;
+    public View onCreateView(LayoutInflater inflater, ViewGroup grupoView, Bundle datosRecibidos) {
+        VistaADevolver=inflater.inflate(R.layout.mostrar_resultados,null);
+        ListaACargar=new ArrayList<>();
+        listView=VistaADevolver.findViewById(R.id.ListaMostrarEnResultados);
+        arrayAdapter=new ArrayAdapter((MainActivity)getActivity(),android.R.layout.simple_list_item_1,ListaACargar);
         tareaAsincronica miTarea=new tareaAsincronica();
+        MainActivity mainActivity=(MainActivity)getActivity();
+        Filtro=mainActivity.getFiltro();
         miTarea.execute();
-        MiListaCatgorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String Cat=ListaCategorias.get(position);
-                MainActivity mainActivity=(MainActivity) getActivity();
-                mainActivity.PasarAResultado(Cat);
-
-            }
-        });
-        return VistaDevolver;
+        return VistaADevolver;
     }
     private class tareaAsincronica extends AsyncTask<Void, Void, Void> {
         @Override
         protected Void doInBackground(Void... voids) {
 
             try {
-                URL miRuta= new URL("http://epok.buenosaires.gob.ar/getCategorias");
+                URL miRuta= new URL("http://epok.buenosaires.gob.ar/buscar/?texto="+Filtro);
                 HttpURLConnection MiConexion=(HttpURLConnection) miRuta.openConnection();
 
                 if(MiConexion.getResponseCode()==200)
@@ -73,32 +63,39 @@ public class fragmentPorCategoria extends Fragment {
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-
-            MiListaCatgorias.setAdapter(arrayAdapter);
+            Log.d("procesar","termino");
+            if(ListaACargar.size()==0)
+            {
+                ListaACargar.add("Su búsqueda no arrojó resultados");
+            }
+            arrayAdapter.notifyDataSetChanged();
+            listView.setAdapter(arrayAdapter);
+            Log.d("mostrar",""+ListaACargar.size());
         }
     }
     public void procesarJSONLeido(InputStreamReader streamLeido)
     {
+        Log.d("procesar","llego");
         JsonReader JSONLeido=new JsonReader(streamLeido);
+
         try {
             JSONLeido.beginObject();
             while(JSONLeido.hasNext()){
                 String NombreElemtoActual=JSONLeido.nextName();
 
-                if(NombreElemtoActual.equals("cantidad_de_categorias"))
+                if(NombreElemtoActual.equals("instancias"))
                 {
-                    int cantidadCategorias=JSONLeido.nextInt();
-                }
-                else
-                {
+                    Log.d("mostrar","entro");
                     JSONLeido.beginArray();
                     while(JSONLeido.hasNext()){
                         JSONLeido.beginObject();
                         while(JSONLeido.hasNext()){
                             NombreElemtoActual=JSONLeido.nextName();
                             if(NombreElemtoActual.equals("nombre")){
+
                                 String valorElementoActual=JSONLeido.nextString();
-                                ListaCategorias.add(valorElementoActual);
+                                Log.d("mostrar",valorElementoActual);
+                                ListaACargar.add(valorElementoActual);
                             }
                             else{
                                 JSONLeido.skipValue();
@@ -108,12 +105,17 @@ public class fragmentPorCategoria extends Fragment {
                     }
                     JSONLeido.endArray();
                 }
+                else{
+                    JSONLeido.skipValue();
+                }
+
             }
 
         }
         catch (Exception e)
         {
-
+            Log.d("mostrar",""+e.getLocalizedMessage());
         }
     }
+
 }

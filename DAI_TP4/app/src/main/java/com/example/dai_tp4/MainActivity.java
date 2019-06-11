@@ -11,6 +11,7 @@ public class MainActivity extends Activity {
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     MediaPlayer mediaPlayer;
+    String Filtro="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,15 +37,36 @@ public class MainActivity extends Activity {
     }
     public void LlamarCategorias(int id)
     {
-
+        fragmentPorCategoria fragmentPorCategoria=new fragmentPorCategoria();
+        fragmentManager=getFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentPorCategoria);
+        fragmentTransaction.commit();
     }
     public void LlamarABuscar(int id)
     {
-
+        FragmentNombre fragmentNombre=new FragmentNombre();
+        fragmentManager=getFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentNombre);
+        fragmentTransaction.commit();
     }
     public void LLamarARadio(int id)
     {
 
+    }
+    public void PasarAResultado(String Valor)
+    {
+        Filtro=Valor;
+        FragmentMostrarResultado fragmentMostrarResultado=new FragmentMostrarResultado();
+        fragmentManager=getFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentMostrarResultado);
+        fragmentTransaction.commit();
+    }
+    public String getFiltro()
+    {
+        return Filtro;
     }
 
 }
