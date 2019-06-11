@@ -35,23 +35,25 @@ public class MainActivity extends Activity {
         mediaPlayer.seekTo(0);
         mediaPlayer.start();
     }
-    public void LlamarCategorias(int id)
+    public void LlamarCategorias()
     {
         fragmentPorCategoria fragmentPorCategoria=new fragmentPorCategoria();
         fragmentManager=getFragmentManager();
         fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentPorCategoria);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-    public void LlamarABuscar(int id)
+    public void LlamarABuscar()
     {
         FragmentNombre fragmentNombre=new FragmentNombre();
         fragmentManager=getFragmentManager();
         fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentNombre);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
-    public void LLamarARadio(int id)
+    public void LLamarARadio()
     {
 
     }
@@ -62,6 +64,7 @@ public class MainActivity extends Activity {
         fragmentManager=getFragmentManager();
         fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentMostrarResultado);
+        fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
     }
     public String getFiltro()

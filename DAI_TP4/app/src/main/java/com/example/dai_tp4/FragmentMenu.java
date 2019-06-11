@@ -34,15 +34,15 @@ public class FragmentMenu extends Fragment implements View.OnClickListener {
         MainActivity actividadPrincipal=(MainActivity)getActivity();
         if(id==R.id.BotonNombre)
         {
-            actividadPrincipal.LlamarABuscar(id);
+            actividadPrincipal.LlamarABuscar();
         }
         if(id==R.id.BotonCategoria)
         {
-            actividadPrincipal.LlamarCategorias(id);
+            actividadPrincipal.LlamarCategorias();
         }
         if(id==R.id.BotonRadio)
         {
-            actividadPrincipal.LLamarARadio(id);
+            actividadPrincipal.LLamarARadio();
         }
     }
     }
