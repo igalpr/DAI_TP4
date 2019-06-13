@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">DAI_TP4</string>
+    <string name="title_activity_actividad_mapas">Map</string>
 </resources>

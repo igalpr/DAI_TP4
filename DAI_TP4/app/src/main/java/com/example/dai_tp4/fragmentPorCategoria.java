@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -73,7 +74,14 @@ public class fragmentPorCategoria extends Fragment {
         protected void onPostExecute(Void aVoid)
         {
             super.onPostExecute(aVoid);
-
+            if(ListaCategorias.isEmpty()) {
+                Toast Vacio = Toast.makeText((MainActivity)getContext(), "esta vacio", Toast.LENGTH_SHORT);
+                Vacio.show();
+            }
+            else{
+                Toast Vacio = Toast.makeText((MainActivity)getContext(), "termino de cargar", Toast.LENGTH_SHORT);
+                Vacio.show();
+            }
             MiListaCatgorias.setAdapter(arrayAdapter);
         }
     }
@@ -113,7 +121,7 @@ public class fragmentPorCategoria extends Fragment {
         }
         catch (Exception e)
         {
-
+            Log.d("errores",""+e.getLocalizedMessage());
         }
     }
 }

@@ -3,14 +3,20 @@ package com.example.dai_tp4;
 import android.app.Activity;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Context;
+import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
+import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 
 public class MainActivity extends Activity {
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
-    MediaPlayer mediaPlayer;
+    static MediaPlayer mediaPlayer;
+    static boolean isPlayingAudio;
     String Filtro="";
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -21,19 +27,19 @@ public class MainActivity extends Activity {
         fragmentTransaction=fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentMenu);
         fragmentTransaction.commit();
-        ponercancion();
+        isPlayingAudio=false;
+        PlayAudio(this.getApplicationContext(),R.raw.musica);
 
     }
-    private void ponercancion()
-    {
-
-        if(mediaPlayer!=null)
+    public static void PlayAudio(Context c, int id){
+        mediaPlayer = MediaPlayer.create(c, id);
+        SoundPool soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC,50);
+        if (!mediaPlayer.isPlaying())
         {
-            mediaPlayer.release();
+            isPlayingAudio= true;
+            mediaPlayer.start();
+            mediaPlayer.setLooping(true);
         }
-        mediaPlayer=MediaPlayer.create(this,R.raw.musica);
-        mediaPlayer.seekTo(0);
-        mediaPlayer.start();
     }
     public void LlamarCategorias()
     {
@@ -49,13 +55,18 @@ public class MainActivity extends Activity {
         FragmentNombre fragmentNombre=new FragmentNombre();
         fragmentManager=getFragmentManager();
         fragmentTransaction=fragmentManager.beginTransaction();
+        Log.d("transaction","begin");
         fragmentTransaction.replace(R.id.FragamentAAsignar,fragmentNombre);
+        Log.d("transaction","replace");
         fragmentTransaction.addToBackStack(null);
         fragmentTransaction.commit();
+        Log.d("transaction","commit");
     }
     public void LLamarARadio()
     {
 
+        Intent IrAlMapa=new Intent(this,ActividadMapas.class);
+        startActivity(IrAlMapa);
     }
     public void PasarAResultado(String Valor)
     {
