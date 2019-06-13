@@ -1,0 +1,5 @@
+<root>
+    <item name='com.google.android.gms.maps.GoogleMap android.location.Location getMyLocation()'>
+        <annotation name='org.jetbrains.annotations.NotNull' />
+    </item>
+</root>
