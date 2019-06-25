@@ -64,6 +64,7 @@ public class fragmentPorCategoria extends Fragment {
                     Log.d("Conexion", "Error en la conexion");
                 }
                 MiConexion.disconnect();
+                Log.d("Conexion","se desconecto");
 
             } catch (Exception e) {
                 Log.d("TryCatch1", "Error en el primer try catch   " +e.getMessage());
@@ -73,13 +74,15 @@ public class fragmentPorCategoria extends Fragment {
         @Override
         protected void onPostExecute(Void aVoid)
         {
+            Log.d("onPostExecute","llega al onPostExecute");
             super.onPostExecute(aVoid);
             if(ListaCategorias.isEmpty()) {
-                Toast Vacio = Toast.makeText((MainActivity)getContext(), "esta vacio", Toast.LENGTH_SHORT);
+                Toast Vacio = Toast.makeText(getActivity(), "esta vacio", Toast.LENGTH_SHORT);
                 Vacio.show();
             }
             else{
-                Toast Vacio = Toast.makeText((MainActivity)getContext(), "termino de cargar", Toast.LENGTH_SHORT);
+                Toast Vacio = Toast.makeText(getActivity(), "termino de cargar", Toast.LENGTH_SHORT);
+                Log.d("Termino","termino de cargar");
                 Vacio.show();
             }
             MiListaCatgorias.setAdapter(arrayAdapter);
@@ -115,6 +118,7 @@ public class fragmentPorCategoria extends Fragment {
                         JSONLeido.endObject();
                     }
                     JSONLeido.endArray();
+                    Log.d("Array",""+ListaCategorias.size());
                 }
             }
 

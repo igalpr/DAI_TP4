@@ -48,7 +48,7 @@ public class ActividadMapas extends FragmentActivity implements OnMapReadyCallba
     }
 
     public void MoverAUbicacionActual(View vista) {
-        Log.d("mapas","entro");
+        /*Log.d("mapas","entro");
 
         Log.d("mapas","entro");
         Location myLocation = MiGoogleMaps.getMyLocation();  //Nullpointer exception.........
@@ -58,12 +58,38 @@ public class ActividadMapas extends FragmentActivity implements OnMapReadyCallba
                 .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
         MiGoogleMaps.animateCamera(
                 CameraUpdateFactory.newCameraPosition(myPosition));
+        */
+        LatLng ubicacionBuenosAires;
+        ubicacionBuenosAires=new LatLng(-34.65,-58.45);
 
+        CameraUpdate iraBuenosAires=CameraUpdateFactory.newLatLng(ubicacionBuenosAires);
+        CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
+
+        MiGoogleMaps.moveCamera(iraBuenosAires);
+        MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
+
+        LatLng ubicacionCente;
+        ubicacionCente=new LatLng(-34.606353, -58.435696);
+        MarkerOptions marquitaCente;
+        marquitaCente=new MarkerOptions();
+        marquitaCente.position(ubicacionCente);
+        marquitaCente.title("Parque Centenario");
+
+        MiGoogleMaps.addMarker(marquitaCente);
     }
+
+    GoogleMap.OnMapClickListener escuchadorMapa=new GoogleMap.OnMapClickListener() {
+        @Override
+        public void onMapClick(LatLng latLng) {
+            Log.d("Manito","Se toco en latitud: "+latLng.latitude+" Y Longitus: "+latLng.longitude);
+        }
+    };
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         MiGoogleMaps = googleMap;
+
+        MiGoogleMaps.setOnMapClickListener(escuchadorMapa);
         // Add a marker in Sydney and move the camera
         /*LatLng sydney = new LatLng(-34, 151);
         MiGoogleMaps.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
