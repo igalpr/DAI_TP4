@@ -9,6 +9,7 @@
         android:text="Mostrar ubicacion actual"
         android:textSize="15sp"
         android:onClick="MoverAUbicacionActual"/>
+
 <fragment xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:map="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"

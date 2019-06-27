@@ -16,6 +16,12 @@ public class FragmentMenu extends Fragment implements View.OnClickListener {
     public View onCreateView(LayoutInflater inflater, ViewGroup grupoView, Bundle datosRecibidos)
     {
 
+        ActividadMapas mapas=(ActividadMapas) getActivity();
+        if(mapas.getClickDelUsuario()==null)
+        {
+            MainActivity principal=(MainActivity)getActivity();
+            principal.SeguirProcesosPunto3(mapas.getClickDelUsuario());
+        }
         VistaDevolver=inflater.inflate(R.layout.menu_prinicpal,grupoView,false);
         Categorias=VistaDevolver.findViewById(R.id.BotonCategoria);
         Buscar=VistaDevolver.findViewById(R.id.BotonNombre);

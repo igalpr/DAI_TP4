@@ -2,6 +2,7 @@ package com.example.dai_tp4;
 
 import android.Manifest;
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.location.LocationListener;
@@ -35,8 +36,10 @@ import java.util.concurrent.TimeUnit;
 public class ActividadMapas extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap MiGoogleMaps;
-
-
+    public LatLng ClickDelUsuario=null;
+    public LatLng getClickDelUsuario(){
+        return ClickDelUsuario;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,43 +48,41 @@ public class ActividadMapas extends FragmentActivity implements OnMapReadyCallba
         SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
+
     }
 
     public void MoverAUbicacionActual(View vista) {
-        /*Log.d("mapas","entro");
-
-        Log.d("mapas","entro");
-        Location myLocation = MiGoogleMaps.getMyLocation();  //Nullpointer exception.........
-        LatLng myLatLng = new LatLng(40.8957973,-3.022119);
-
-        CameraPosition myPosition = new CameraPosition.Builder()
-                .target(myLatLng).zoom(17).bearing(90).tilt(30).build();
-        MiGoogleMaps.animateCamera(
-                CameraUpdateFactory.newCameraPosition(myPosition));
-        */
-        LatLng ubicacionBuenosAires;
-        ubicacionBuenosAires=new LatLng(-34.65,-58.45);
-
-        CameraUpdate iraBuenosAires=CameraUpdateFactory.newLatLng(ubicacionBuenosAires);
-        CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
-
-        MiGoogleMaps.moveCamera(iraBuenosAires);
-        MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
-
         LatLng ubicacionCente;
         ubicacionCente=new LatLng(-34.606353, -58.435696);
         MarkerOptions marquitaCente;
         marquitaCente=new MarkerOptions();
         marquitaCente.position(ubicacionCente);
         marquitaCente.title("Parque Centenario");
-
+        CameraUpdate Centenerio=CameraUpdateFactory.newLatLng(ubicacionCente);
         MiGoogleMaps.addMarker(marquitaCente);
+        CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
+        MiGoogleMaps.moveCamera(Centenerio);
+        MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
+
+
     }
 
     GoogleMap.OnMapClickListener escuchadorMapa=new GoogleMap.OnMapClickListener() {
         @Override
         public void onMapClick(LatLng latLng) {
-            Log.d("Manito","Se toco en latitud: "+latLng.latitude+" Y Longitus: "+latLng.longitude);
+            MarkerOptions MarcaClick;
+            MarcaClick=new MarkerOptions();
+            MarcaClick.position(latLng);
+            MarcaClick.title("click del usuario");
+            CameraUpdate Centenerio=CameraUpdateFactory.newLatLng(latLng);
+            MiGoogleMaps.addMarker(MarcaClick);
+            CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
+            MiGoogleMaps.moveCamera(Centenerio);
+            MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
+            ClickDelUsuario=latLng;
+            Intent CambiarAView;
+            CambiarAView = new Intent(getApplicationContext(),MainActivity.class);
+            startActivity(CambiarAView);
         }
     };
 
@@ -90,11 +91,17 @@ public class ActividadMapas extends FragmentActivity implements OnMapReadyCallba
         MiGoogleMaps = googleMap;
 
         MiGoogleMaps.setOnMapClickListener(escuchadorMapa);
-        // Add a marker in Sydney and move the camera
-        /*LatLng sydney = new LatLng(-34, 151);
-        MiGoogleMaps.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-        MiGoogleMaps.moveCamera(CameraUpdateFactory.newLatLng(sydney));
-    */
+        LatLng ubicacionCente;
+        ubicacionCente=new LatLng(-34.606353, -58.435696);
+        MarkerOptions marquitaCente;
+        marquitaCente=new MarkerOptions();
+        marquitaCente.position(ubicacionCente);
+        marquitaCente.title("Parque Centenario");
+        CameraUpdate Centenerio=CameraUpdateFactory.newLatLng(ubicacionCente);
+        MiGoogleMaps.addMarker(marquitaCente);
+        CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
+        MiGoogleMaps.moveCamera(Centenerio);
+        MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
     }
 
 }

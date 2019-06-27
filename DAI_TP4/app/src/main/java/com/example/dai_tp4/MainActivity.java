@@ -11,13 +11,17 @@ import android.media.SoundPool;
 import android.os.Bundle;
 import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
+
 public class MainActivity extends Activity {
 
     FragmentManager fragmentManager;
     FragmentTransaction fragmentTransaction;
     static MediaPlayer mediaPlayer;
     static boolean isPlayingAudio;
+    LatLng posicionseleccionada=null;
     String Filtro="";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -30,6 +34,22 @@ public class MainActivity extends Activity {
         isPlayingAudio=false;
         PlayAudio(this.getApplicationContext(),R.raw.musica);
 
+    }
+    public void SeguirProcesosPunto3(LatLng posicionDelClick)
+    {
+        posicionseleccionada=posicionDelClick;
+    }
+    public void IrAlMapa(int radio,String Categoria)
+    {
+
+         Intent irAPuntoTres=new Intent(this,ActividadMapas.class);
+         Bundle paqueteDeDatos=new Bundle();
+         paqueteDeDatos.putDouble("latitud",posicionseleccionada.latitude);
+         paqueteDeDatos.putDouble("longitud",posicionseleccionada.longitude);
+         paqueteDeDatos.putInt("radio",radio);
+         paqueteDeDatos.putString("categoria",Categoria);
+         irAPuntoTres.putExtras(paqueteDeDatos);
+         startActivity(irAPuntoTres);
     }
     public static void PlayAudio(Context c, int id){
         mediaPlayer = MediaPlayer.create(c, id);
