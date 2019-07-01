@@ -38,6 +38,8 @@
         <activity
             android:name=".ActividadMapas"
             android:label="@string/title_activity_actividad_mapas" />
+        <activity android:name=".ParteDosPuntoTres"
+            android:label="@string/title_parte_dos_punto_tres"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

@@ -1,6 +1,8 @@
 package com.example.dai_tp4;
 
+import android.app.Activity;
 import android.app.Fragment;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.JsonReader;
@@ -8,6 +10,7 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
@@ -21,20 +24,27 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
 
-public class ParteDosPuntoTres extends Fragment {
-    View VistaADevolver;
+public class ParteDosPuntoTres extends Activity {
+
     SeekBar seekbar;
     TextView ValorSeekBar;
     ListView MiListaCatgorias;
-    ArrayList<String> ListaCategorias;
+    ArrayList<String> ListaCategorias=new ArrayList<String>();
     ArrayAdapter arrayAdapter;
-    public View onCreateView(LayoutInflater inflater, ViewGroup grupoView, Bundle datosRecibidos) {
-
-        VistaADevolver=inflater.inflate(R.layout.parte_dos_punto_tres,grupoView,false);
-        MiListaCatgorias=VistaADevolver.findViewById(R.id.listaDeCategorias);
-        seekbar=VistaADevolver.findViewById(R.id.SeekBarRadio);
-        ValorSeekBar=VistaADevolver.findViewById(R.id.SeguimientoSeekBar);
-        arrayAdapter=new ArrayAdapter((MainActivity)getActivity(),android.R.layout.simple_list_item_1,ListaCategorias);
+    String cat;
+    Double longitud;
+    Double lati;
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.parte_dos_punto_tres);
+        MiListaCatgorias=findViewById(R.id.listaDeCategorias);
+        seekbar=findViewById(R.id.SeekBarRadio);
+        Bundle DatosRecibidos=this.getIntent().getExtras();
+        longitud=Double.parseDouble(DatosRecibidos.getString("longitud"));
+        lati=Double.parseDouble(DatosRecibidos.getString("latitud"));
+        ValorSeekBar=findViewById(R.id.SeguimientoSeekBar);
+        arrayAdapter=new ArrayAdapter(this,android.R.layout.simple_list_item_1,ListaCategorias);
         tareaAsincronica miTarea=new tareaAsincronica();
         miTarea.execute();
         seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
@@ -55,13 +65,23 @@ public class ParteDosPuntoTres extends Fragment {
         MiListaCatgorias.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                String Cat=ListaCategorias.get(position);
-                MainActivity mainActivity=(MainActivity) getActivity();
-                mainActivity.PasarAResultado(Cat);
+                cat=ListaCategorias.get(position);
+                CambiarActivity();
 
             }
         });
-        return VistaADevolver;
+        ;
+    }
+    public void  CambiarActivity()
+    {
+        Intent irAPuntoTres=new Intent(this,ResultadosPuntoTres.class);
+        Bundle paqueteDeDatos=new Bundle();
+        paqueteDeDatos.putDouble("latitud",lati);
+        paqueteDeDatos.putDouble("longitud",longitud);
+        paqueteDeDatos.putInt("radio",seekbar.getProgress());
+        paqueteDeDatos.putString("categoria",cat);
+        irAPuntoTres.putExtras(paqueteDeDatos);
+        startActivity(irAPuntoTres);
     }
     private class tareaAsincronica extends AsyncTask<Void, Void, Void> {
         @Override
@@ -95,15 +115,7 @@ public class ParteDosPuntoTres extends Fragment {
         {
             Log.d("onPostExecute","llega al onPostExecute");
             super.onPostExecute(aVoid);
-            if(ListaCategorias.isEmpty()) {
-                Toast Vacio = Toast.makeText(getActivity(), "esta vacio", Toast.LENGTH_SHORT);
-                Vacio.show();
-            }
-            else{
-                Toast Vacio = Toast.makeText(getActivity(), "termino de cargar", Toast.LENGTH_SHORT);
-                Log.d("Termino","termino de cargar");
-                Vacio.show();
-            }
+            arrayAdapter.notifyDataSetChanged();
             MiListaCatgorias.setAdapter(arrayAdapter);
         }
     }
@@ -126,8 +138,9 @@ public class ParteDosPuntoTres extends Fragment {
                         JSONLeido.beginObject();
                         while(JSONLeido.hasNext()){
                             NombreElemtoActual=JSONLeido.nextName();
-                            if(NombreElemtoActual.equals("nombre")){
+                            if(NombreElemtoActual.equals("nombre_normalizado")){
                                 String valorElementoActual=JSONLeido.nextString();
+                                Log.d("leolog",valorElementoActual);
                                 ListaCategorias.add(valorElementoActual);
                             }
                             else{

@@ -35,9 +35,13 @@ public class MainActivity extends Activity {
         PlayAudio(this.getApplicationContext(),R.raw.musica);
 
     }
-    public void SeguirProcesosPunto3(LatLng posicionDelClick)
-    {
-        posicionseleccionada=posicionDelClick;
+    /*public void SeguirProcesosPunto3()
+    {  ParteDosPuntoTres punto2=new ParteDosPuntoTres();
+        fragmentManager=getFragmentManager();
+        fragmentTransaction=fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.FragamentAAsignar,punto2);
+        fragmentTransaction.addToBackStack(null);
+        fragmentTransaction.commit();
     }
     public void IrAlMapa(int radio,String Categoria)
     {
@@ -50,7 +54,7 @@ public class MainActivity extends Activity {
          paqueteDeDatos.putString("categoria",Categoria);
          irAPuntoTres.putExtras(paqueteDeDatos);
          startActivity(irAPuntoTres);
-    }
+    }*/
     public static void PlayAudio(Context c, int id){
         mediaPlayer = MediaPlayer.create(c, id);
         SoundPool soundPool = new SoundPool(4, AudioManager.STREAM_MUSIC,50);

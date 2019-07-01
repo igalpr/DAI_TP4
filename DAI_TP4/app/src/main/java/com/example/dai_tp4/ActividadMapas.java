@@ -36,10 +36,6 @@ import java.util.concurrent.TimeUnit;
 public class ActividadMapas extends FragmentActivity implements OnMapReadyCallback{
 
     private GoogleMap MiGoogleMaps;
-    public LatLng ClickDelUsuario=null;
-    public LatLng getClickDelUsuario(){
-        return ClickDelUsuario;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -70,18 +66,12 @@ public class ActividadMapas extends FragmentActivity implements OnMapReadyCallba
     GoogleMap.OnMapClickListener escuchadorMapa=new GoogleMap.OnMapClickListener() {
         @Override
         public void onMapClick(LatLng latLng) {
-            MarkerOptions MarcaClick;
-            MarcaClick=new MarkerOptions();
-            MarcaClick.position(latLng);
-            MarcaClick.title("click del usuario");
-            CameraUpdate Centenerio=CameraUpdateFactory.newLatLng(latLng);
-            MiGoogleMaps.addMarker(MarcaClick);
-            CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
-            MiGoogleMaps.moveCamera(Centenerio);
-            MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
-            ClickDelUsuario=latLng;
-            Intent CambiarAView;
-            CambiarAView = new Intent(getApplicationContext(),MainActivity.class);
+
+            Bundle paquete=new Bundle();
+            paquete.putString("latitud",""+latLng.latitude);
+            paquete.putString("longitud",""+latLng.longitude);
+            Intent CambiarAView=new Intent(ActividadMapas.this, ParteDosPuntoTres.class);;
+            CambiarAView.putExtras(paquete);
             startActivity(CambiarAView);
         }
     };
@@ -99,7 +89,7 @@ public class ActividadMapas extends FragmentActivity implements OnMapReadyCallba
         marquitaCente.title("Parque Centenario");
         CameraUpdate Centenerio=CameraUpdateFactory.newLatLng(ubicacionCente);
         MiGoogleMaps.addMarker(marquitaCente);
-        CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(12);
+        CameraUpdate hacerZoom=CameraUpdateFactory.zoomTo(16);
         MiGoogleMaps.moveCamera(Centenerio);
         MiGoogleMaps.animateCamera(hacerZoom, 1000, null);
     }
