@@ -37,7 +37,7 @@ public class ResultadosPuntoTres extends Activity implements OnMapReadyCallback 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        //setContentView(R.layout.activity_resultados_punto_tres);
+        setContentView(R.layout.activity_resultados_punto_tres);
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
         Bundle DatosRecibidos=this.getIntent().getExtras();
         latitud=DatosRecibidos.getDouble("latitud");
